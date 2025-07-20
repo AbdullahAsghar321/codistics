@@ -1,114 +1,130 @@
 "use client"
-import { motion } from 'framer-motion';
+import { motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Button from './ui/Button';
+import { useEffect, useState } from 'react';
 
 export default function HeroSection() {
-  // Animation variants for the columns
-  const column1Variants = {
-    animate: {
-      y: ["0%", "-20%", "0%"],
-      transition: {
-        y: {
-          duration: 15,
-          repeat: Infinity,
-          ease: "linear"
-        }
-      }
-    }
-  };
+  const [isMobile, setIsMobile] = useState(false);
 
-  const column2Variants = {
-    animate: {
-      y: ["0%", "20%", "0%"],
-      transition: {
-        y: {
-          duration: 15,
-          repeat: Infinity,
-          ease: "linear"
-        }
-      }
-    }
-  };
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // For horizontal scrolling on mobile
+  const { scrollXProgress } = useScroll({
+    container: isMobile ? document.getElementById('mobile-scroll-container') : undefined
+  });
+  const x = useTransform(scrollXProgress, [0, 1], ['0%', '-100%']);
 
   return (
     <section className="relative overflow-hidden min-h-screen flex items-center bg-[#FFFADC]">
       <div className="container mx-auto px-6 py-16 md:py-24 flex flex-col md:flex-row items-center">
-        {/* Text Content (same as before) */}
+        {/* Text Content */}
         <div className="md:w-1/2 mb-12 md:mb-0 md:pr-12">
-         <h1  className="alfa-slab-one-regular text-4xl md:text-6xl font-bold mb-6 leading-tight">
-  Turning Your <span className="text-[#B6F500]">Trust</span> into Belief
-</h1>
-
+          <h1 className="alfa-slab-one-regular text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            Turning Your <span className="text-[#B6F500]">Trust</span> into Belief
+          </h1>
           <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-lg">
             Discover how our innovative designs can elevate your environment. Let us help you create a space that reflects your style and vision.
           </p>
           <div className="flex space-x-4">
-  <Button variant="primary">Explore</Button>
-  <Button variant="secondary">Contact</Button>
+            <Button variant="primary">Explore</Button>
+            <Button variant="secondary">Contact</Button>
           </div>
         </div>
 
-        {/* Image Grid Columns with Framer Motion */}
-     <div className="md:w-1/2 flex space-x-4 h-[700px] overflow-hidden">
-  {/* Column 1 - Moves up continuously with pic and pic1 */}
-  <motion.div
-    animate={{
-      y: ["0%", "-100%"],
-      transition: {
-        y: {
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear"
-        }
-      }
-    }}
-    className="w-1/2 space-y-4"
-  >
-    {['pic', 'pic1', 'pic', 'pic1', 'pic', 'pic1'].map((img, index) => (
-      <div 
-        key={`col1-${index}`} 
-        className={`relative ${index % 2 === 0 ? 'h-64' : 'h-48'} rounded-xl overflow-hidden`}
-      >
-        <Image
-          src={`/images/${img}.jpg`}
-          alt={`Design ${index + 1}`}
-          fill
-          className="object-cover"
-        />
-      </div>
-    ))}
-  </motion.div>
+        {/* Image Grid - Different behavior for mobile and desktop */}
+        {isMobile ? (
+          // Mobile - Horizontal Scroll
+          <div 
+            id="mobile-scroll-container"
+            className="md:w-1/2 w-full h-96 overflow-x-auto overflow-y-hidden whitespace-nowrap snap-x snap-mandatory"
+          >
+            <div className="inline-flex space-x-4 h-full">
+              {['pic', 'pic1', 'pic', 'pic1', 'pic', 'pic1'].map((img, index) => (
+                <div 
+                  key={`mobile-${index}`}
+                  className="inline-block h-full w-64 snap-center relative"
+                >
+                  <Image
+                    src={`/images/${img}.jpg`}
+                    alt={`Design ${index + 1}`}
+                    fill
+                    className="object-cover rounded-xl"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          // Desktop - Vertical Animation
+          <div className="md:w-1/2 flex space-x-4 h-[700px] overflow-hidden">
+            {/* Column 1 - Moves up continuously */}
+            <motion.div
+              animate={{
+                y: ["0%", "-100%"],
+                transition: {
+                  y: {
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }
+                }
+              }}
+              className="w-1/2 space-y-4"
+            >
+              {['pic', 'pic1', 'pic', 'pic1', 'pic', 'pic1'].map((img, index) => (
+                <div 
+                  key={`col1-${index}`} 
+                  className={`relative ${index % 2 === 0 ? 'h-64' : 'h-48'} rounded-xl overflow-hidden`}
+                >
+                  <Image
+                    src={`/images/${img}.jpg`}
+                    alt={`Design ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </motion.div>
 
-  {/* Column 2 - Moves down continuously with pic1 and pic */}
-  <motion.div
-    animate={{
-      y: ["-50%", "0%"],
-      transition: {
-        y: {
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear"
-        }
-      }
-    }}
-    className="w-1/2 space-y-4"
-  >
-    {['pic1', 'pic', 'pic1', 'pic', 'pic1', 'pic'].map((img, index) => (
-      <div 
-        key={`col2-${index}`}
-        className={`relative ${index % 2 === 0 ? 'h-56' : 'h-72'} rounded-xl overflow-hidden`}
-      >
-        <Image
-          src={`/images/${img}.jpg`}
-          alt={`Design ${index + 4}`}
-          fill
-          className="object-cover"
-        />
-      </div>
-    ))}
-  </motion.div>
-</div>
+            {/* Column 2 - Moves down continuously */}
+            <motion.div
+              animate={{
+                y: ["-50%", "0%"],
+                transition: {
+                  y: {
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }
+                }
+              }}
+              className="w-1/2 space-y-4"
+            >
+              {['pic1', 'pic', 'pic1', 'pic', 'pic1', 'pic'].map((img, index) => (
+                <div 
+                  key={`col2-${index}`}
+                  className={`relative ${index % 2 === 0 ? 'h-56' : 'h-72'} rounded-xl overflow-hidden`}
+                >
+                  <Image
+                    src={`/images/${img}.jpg`}
+                    alt={`Design ${index + 4}`}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -12,6 +12,16 @@
 }
 
 
+/* For Webkit browsers */
+#mobile-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+#mobile-scroll-container {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
