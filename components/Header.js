@@ -11,7 +11,7 @@ export default function Navbar() {
     { name: "Home", href: "/" },
     { 
       name: "Services", 
-      href: "#services",
+      href: "/services",
       dropdown: [
         { name: "Web Design", href: "/services/web-design" },
         { name: "Graphic Design", href: "/services/graphic-design" },
@@ -52,24 +52,32 @@ export default function Navbar() {
                     onMouseEnter={() => toggleDropdown(item.name)}
                     onMouseLeave={() => toggleDropdown(null)}
                   >
-                    <button 
-                      className="text-gray-900 hover:text-[#B6F500] px-3 py-2 font-medium flex items-center"
-                    >
-                      {item.name}
-                      <svg 
-                        className="ml-1 h-4 w-4" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
+                    <div className="flex items-center">
+                      <Link
+                        href={item.href}
+                        className="text-gray-900 hover:text-[#B6F500] px-3 py-2 font-medium"
                       >
-                        <path 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          strokeWidth={2} 
-                          d="M19 9l-7 7-7-7" 
-                        />
-                      </svg>
-                    </button>
+                        {item.name}
+                      </Link>
+                      <button 
+                        className="text-gray-900 hover:text-[#B6F500] focus:outline-none"
+                        onClick={() => toggleDropdown(item.name)}
+                      >
+                        <svg 
+                          className="ml-1 h-4 w-4" 
+                          fill="none" 
+                          viewBox="0 0 24 24" 
+                          stroke="currentColor"
+                        >
+                          <path 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            strokeWidth={2} 
+                            d="M19 9l-7 7-7-7" 
+                          />
+                        </svg>
+                      </button>
+                    </div>
 
                     {activeDropdown === item.name && (
                       <motion.div
@@ -142,25 +150,32 @@ export default function Navbar() {
             <div key={item.name}>
               {item.dropdown ? (
                 <div className="relative">
-                  <button
-                    onClick={() => toggleDropdown(item.name)}
-                    className="w-full text-left text-gray-900 hover:text-[#B6F500] block px-3 py-2 rounded-md text-base font-medium flex justify-between items-center"
-                  >
-                    {item.name}
-                    <svg 
-                      className={`h-4 w-4 transform ${activeDropdown === item.name ? 'rotate-180' : ''}`} 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      stroke="currentColor"
+                  <div className="flex justify-between items-center">
+                    <Link
+                      href={item.href}
+                      className="text-gray-900 hover:text-[#B6F500] block px-3 py-2 rounded-md text-base font-medium"
                     >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M19 9l-7 7-7-7" 
-                      />
-                    </svg>
-                  </button>
+                      {item.name}
+                    </Link>
+                    <button
+                      onClick={() => toggleDropdown(item.name)}
+                      className="text-gray-900 hover:text-[#B6F500] px-3 py-2 focus:outline-none"
+                    >
+                      <svg 
+                        className={`h-4 w-4 transform ${activeDropdown === item.name ? 'rotate-180' : ''}`} 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          strokeWidth={2} 
+                          d="M19 9l-7 7-7-7" 
+                        />
+                      </svg>
+                    </button>
+                  </div>
 
                   {activeDropdown === item.name && (
                     <div className="pl-4 space-y-1">

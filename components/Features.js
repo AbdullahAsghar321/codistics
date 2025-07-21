@@ -64,16 +64,6 @@ export default function FeaturesSection() {
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex flex-col sm:flex-row justify-center gap-4"
-        >
-          <Button variant="primary">Learn More</Button>
-          <Button variant="secondary">Sign Up</Button>
-        </motion.div>
       </div>
     </section>
   )

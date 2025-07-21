@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import Service from "@/models/services"; // ✅ renamed
+import Service from "@/models/Service"; // ✅ renamed
 import dbConnect from "@/lib/mongoose";
 
 // GET: Fetch all services

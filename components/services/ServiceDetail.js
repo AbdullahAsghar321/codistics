@@ -1,6 +1,7 @@
 // components/services/ServiceDetail.jsx
 import Image from "next/image";
 import Button from "@/components/ui/Button";
+import Link from "next/link";
 
 export default function ServiceDetail({ service }) {
   return (
@@ -72,8 +73,10 @@ export default function ServiceDetail({ service }) {
         <h2 className="text-3xl font-bold mb-6">
           Ready to start your {service.title} project?
         </h2>
-        <Button href="/contact" variant="primary" size="lg">
-          Get a Free Quote
+        <Button variant="primary" size="lg">
+          <Link href={"/contact"} className="text-black">
+           Get a Free Quote
+          </Link>
         </Button>
       </section>
     </div>
